@@ -39,7 +39,11 @@ namespace VMS.TPS
         // Declaration space for all the functions which make up the program.
         // Execution begins with the "Execute" function.
 
- 
+
+
+
+
+
 
 
 
@@ -63,6 +67,7 @@ namespace VMS.TPS
             List<string> p7 = new List<string>();
             List<string> p8 = new List<string>();
 
+
             // start of actual code
 
             MessageBox.Show("Trig 1");
@@ -72,22 +77,27 @@ namespace VMS.TPS
                 return;
             }
 
-            //this snippet generates lists of the structures for every plan ans plansum that might be loaded in. these lists sre then used to populate the Organ list dropdown in the GUI.
+            //this snippet generates lists of the structures for every plan and plansum that might be loaded in. these lists are then used to populate the Organ list dropdown in the GUI.
 
             foreach (PlanSum aplansum in Plansums)
             {
-                if (aplansum.StructureSet.Structures == null)
-                {
+                if (aplansum.Id == "motion assess")
+                { 
+                    MessageBox.Show("Trig Sum cHECK");
+                    sumcnt++;
                     continue;
                 }
-
                 sumcnt++;
                 MessageBox.Show("Trig 2");
                 if (sumcnt == 1)
                 {
                     foreach (Structure S in aplansum.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p1.Add(S.Id);
                         }
@@ -105,7 +115,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplansum.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p2.Add(S.Id);
                         }
@@ -123,7 +137,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplansum.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p3.Add(S.Id);
                         }
@@ -141,8 +159,10 @@ namespace VMS.TPS
 
             foreach (PlanSetup aplan in Plans)
             {
-                if(aplan.StructureSet.Structures == null)
+                if(aplan.Id == "motion assess")
                 {
+                    MessageBox.Show("Trig Plan cHECK");
+                    plancnt++;
                     continue;
                 }
 
@@ -152,7 +172,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p4.Add(S.Id);
                         }
@@ -170,7 +194,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p5.Add(S.Id);
                         }
@@ -188,7 +216,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p6.Add(S.Id);
                         }
@@ -206,7 +238,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p7.Add(S.Id);
                         }
@@ -224,7 +260,11 @@ namespace VMS.TPS
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
                     {
-                        if (S.Id != null)
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
                         {
                             p8.Add(S.Id);
                         }
@@ -240,20 +280,9 @@ namespace VMS.TPS
                 }
 
                 MessageBox.Show("Trig 3.5");
-            }
-
-
-
-
-
-
-            
-
-
-
+            }                                                       
 
             //GUI starts here
-
 
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
