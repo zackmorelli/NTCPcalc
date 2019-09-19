@@ -42,13 +42,6 @@ namespace VMS.TPS
 
 
 
-
-
-
-
-
-
-
         public void Execute(ScriptContext context)     // PROGRAM START - sending a return to Execute will end the program
         {
             //Variable declaration space
@@ -70,7 +63,7 @@ namespace VMS.TPS
 
             // start of actual code
 
-            MessageBox.Show("Trig 1");
+          //  MessageBox.Show("Trig 1");
             if (context.Patient == null)
             {
                 MessageBox.Show("Please load a patient with a treatment plan before running this script!");
@@ -83,12 +76,12 @@ namespace VMS.TPS
             {
                 if (aplansum.Id == "motion assess")
                 { 
-                    MessageBox.Show("Trig Sum cHECK");
+                   // MessageBox.Show("Trig Sum cHECK");
                     sumcnt++;
                     continue;
                 }
                 sumcnt++;
-                MessageBox.Show("Trig 2");
+               // MessageBox.Show("Trig 2");
                 if (sumcnt == 1)
                 {
                     foreach (Structure S in aplansum.StructureSet.Structures)
@@ -161,13 +154,13 @@ namespace VMS.TPS
             {
                 if(aplan.Id == "motion assess")
                 {
-                    MessageBox.Show("Trig Plan cHECK");
+                   // MessageBox.Show("Trig Plan cHECK");
                     plancnt++;
                     continue;
                 }
 
                 plancnt++;
-                MessageBox.Show("Trig 3");
+              //  MessageBox.Show("Trig 3");
                 if (plancnt == 1)
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
@@ -279,7 +272,7 @@ namespace VMS.TPS
                     }
                 }
 
-                MessageBox.Show("Trig 3.5");
+               // MessageBox.Show("Trig 3.5");
             }                                                       
 
             //GUI starts here
@@ -287,26 +280,14 @@ namespace VMS.TPS
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
-            MessageBox.Show("Trig 4");
+           // MessageBox.Show("Trig 4");
 
             //Starts GUI for Dose objective check in a separate thread
             System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans,p1,p2,p3,p4,p5,p6,p7,p8));
 
-            MessageBox.Show("Trig End");
+            // MessageBox.Show("Trig End");
 
 
         }
-
-
-
-
-
-
-
-
-
-
     }
-
-
 }
