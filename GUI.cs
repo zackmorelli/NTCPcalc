@@ -20,7 +20,7 @@ namespace NTCPcalc
         public string pl = null;
         public string org = null;
         double TD50 = 0.0;
-        double ab = 0.0;
+      //  double ab = 0.0;
         string ty;
         // double n = 0.0;
         // double m = 0.0;
@@ -42,20 +42,12 @@ namespace NTCPcalc
         List<string> L7 = new List<string>();
         List<string> L8 = new List<string>();
 
-        public GUI(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans, List<string> p1, List<string> p2, List<string> p3, List<string> p4, List<string> p5, List<string> p6, List<string> p7, List<string> p8)
+        public GUI(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
             // MessageBox.Show("Trig 5");
             InitializeComponent();
 
-            L1 = p1;
-            L2 = p2;
-            L3 = p3;
-            L4 = p4;
-            L5 = p5;
-            L6 = p6;
-            L7 = p7;
-            L8 = p8;
-
+ 
             // MessageBox.Show("Trig 6");
 
             foreach (PlanSum aplansum in Plansums)
@@ -72,10 +64,10 @@ namespace NTCPcalc
                 // MessageBox.Show("Trig 8");
             }
 
-            ExecuteCalc.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, Plansums, Plans, TD50, ab); };
+            ExecuteCalc.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, Plansums, Plans, TD50); };
 
-            OrganList.SelectedIndexChanged += (sender, EventArgs) => { LISTREADER(pl, org); };
-            checkedListBox1.SelectedIndexChanged += (sender, EventArgs) => { LISTREADER(pl, org); };
+   
+
 
             //  MessageBox.Show("Trig GUI END");
         }  // end of actual GUI execution
@@ -83,89 +75,6 @@ namespace NTCPcalc
         //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         //associated functions
-
-        private void LISTREADER(string pl, string org)
-        {
-            // MessageBox.Show("Listreader fire");
-            // MessageBox.Show("org is : " + org);
-
-            string line;
-            string[] words = null;
-            bool s = false;
-            string organ;
-            string pn;
-            string pm;
-            string TD = null;          // Dose tolerance
-            string lab;          // alpha/beta
-            string path = @"\\Wvvrnimbp01ss\va_data$\filedata\ProgramData\Vision\PublishedScripts\ntcpdata.txt";
-
-            if (File.Exists(path))
-            {
-                using (StreamReader Lread = File.OpenText(path))   //opens file and puts it into a stream
-                {
-                    while ((line = Lread.ReadLine()) != "END")    //each loop pulls a line from the file until no lines left
-                    {
-                        if(line == null || line == "")
-                        {
-                            continue;
-                        }
-
-                        words = line.Split(',');        // convenientley splits the line into multiple strings, stored in a string array, using space as a delimiter
-                                                        // Console.WriteLine("words size: {0}", words.Length);
-                                                        // MessageBox.Show("while fire");
-                        organ = words[0];
-                        if(organ == null)
-                        {
-                            continue;
-                        }
-                        pn = words[1];
-                        pm = words[2];
-
-                        if (ty == "METS")
-                        {
-                            TD = words[3];
-                        }
-                        else if (ty == "HCC")
-                        {
-                            TD = words[4];
-                        }
-
-                        lab = words[5];
-
-                        //  MessageBox.Show("org is : " + org);
-
-                        if (org.StartsWith(organ))
-                        {
-                            nbox.Text = "Volume Effect Parameter n: " + pn;
-                            mbox.Text = "Slope Parameter m " + pm;
-                            // n = Convert.ToDouble(pn);
-                            //  m = Convert.ToDouble(pm);
-                            TD50 = Convert.ToDouble(TD);
-                            ab = Convert.ToDouble(lab);
-                            //   MessageBox.Show("Organ data set fire");
-                            //  MessageBox.Show("n is: " + pn);
-                            // MessageBox.Show("m is " +pm);
-                            if(TD != null)
-                            {
-                                MessageBox.Show("TD50 is: " + TD50);
-                                MessageBox.Show("Alpha/Beta is: " + ab);
-                            }
-                            s = true;
-                            break;
-                        }
-                    }
-                    if (s == false)
-                    {
-                        MessageBox.Show("The Program does not have data for this structure yet, and therefore cannot compute the NTCP!");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("File not found!");
-            }
-        }
-
 
         private double Veff(DVHData sDVH, double RX, double Dmax, double Vol)
         {
@@ -227,11 +136,11 @@ namespace NTCPcalc
             return NTCP;
         }
 
-        private void EXECUTE(string org, double TD50, double ab, IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
+        private void EXECUTE(string org, double TD50, IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
-            double n = Convert.ToDouble(nbox.Text.Substring(27));  // gets either default that is already in boxes, OR whatever user has entered!!!
-            double m = Convert.ToDouble(mbox.Text.Substring(18));
-
+            double n = 1.0;  // 
+            double m = 0.12;
+            double ab = 3.0;
 
               MessageBox.Show("Trig EXE");
             IEnumerator ER = Plans.GetEnumerator();
@@ -379,15 +288,15 @@ namespace NTCPcalc
 
         private void ExecuteCalc_Click(object sender, EventArgs args)
         {
-            org = OrganList.SelectedItem.ToString();
+           
             //  MessageBox.Show("Organ: " + org.ToString());
             //  MessageBox.Show("Trig 12 - First Click");
         }
 
-        void buttonNext_Click(object sender, EventArgs e, IEnumerable<PlanSum> PLS, IEnumerable<PlanSetup> PLN, double TD50, double ab)
+        void buttonNext_Click(object sender, EventArgs e, IEnumerable<PlanSum> PLS, IEnumerable<PlanSetup> PLN, double TD50)
         {
             // MessageBox.Show("Trig MORTY");
-            EXECUTE(org, TD50, ab, PLS, PLN);
+            EXECUTE(org, TD50, PLS, PLN);
         }
 
         void PlanList_SelectedIndexChanged(object sender, EventArgs e)
@@ -403,19 +312,19 @@ namespace NTCPcalc
                     if (c == 1)
                     {
                         // MessageBox.Show("Trig L1");
-                        OrganList.DataSource = L1;
+                       
                         break;
                     }
                     else if (c == 2)
                     {
                         //  MessageBox.Show("Trig L2");
-                        OrganList.DataSource = L2;
+                        
                         break;
                     }
                     else if (c == 3)
                     {
                         // MessageBox.Show("Trig L3");
-                        OrganList.DataSource = L3;
+                       
                         break;
                     }
                 }
@@ -428,31 +337,31 @@ namespace NTCPcalc
                     if (k == 1)
                     {
                         // MessageBox.Show("Trig L4");
-                        OrganList.DataSource = L4;
+                        
                         break;
                     }
                     else if (k == 2)
                     {
                         //  MessageBox.Show("Trig L5");
-                        OrganList.DataSource = L5;
+                        
                         break;
                     }
                     else if (k == 3)
                     {
                         // MessageBox.Show("Trig L6");
-                        OrganList.DataSource = L6;
+                       ;
                         break;
                     }
                     else if (k == 4)
                     {
                         // MessageBox.Show("Trig L7");
-                        OrganList.DataSource = L7;
+                        
                         break;
                     }
                     else if (k == 5)
                     {
                         // MessageBox.Show("Trig L8");
-                        OrganList.DataSource = L8;
+                       
                         break;
                     }
                 }
@@ -464,24 +373,19 @@ namespace NTCPcalc
             k = 0;
         }
 
-        void OrganList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // MessageBox.Show("OrganList fire");
-            org = OrganList.SelectedItem.ToString();
-        }
-
         void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             // MessageBox.Show("checkedlistboxfire");
             if (checkedListBox1.GetItemChecked(0))
             {
                 ty = "HCC";
+                TD50 = 39.8;
             }
             else if (checkedListBox1.GetItemChecked(1))
             {
                 ty = "METS";
+                TD50 = 45.8;
             }
         }
-
     }
 }
