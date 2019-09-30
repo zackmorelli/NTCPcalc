@@ -111,9 +111,17 @@ namespace NTCPcalc
 
         private double NTCPCALC(double VE, double TD50, double ab, double RX, double Dmax, double Vol, int fracs, double n, double m)
         {
-            //  MessageBox.Show("Dmax is: " + Dmax.ToString());
+             // MessageBox.Show("Dmax is: " + Dmax.ToString());
             //  double Fracs = (double)fracs;
-            //  MessageBox.Show("Fracs is: " + fracs.ToString());
+             // MessageBox.Show("Fracs is: " + fracs.ToString());
+          //  MessageBox.Show("VE is: " + VE.ToString());
+          //  MessageBox.Show("TD50 is: " + TD50.ToString());
+          //  MessageBox.Show("ab is: " + ab.ToString());
+          //  MessageBox.Show("Rx is: " + RX.ToString());
+          //  MessageBox.Show("Vol is: " + Vol.ToString());
+           // MessageBox.Show("n is: " + n.ToString());
+          //  MessageBox.Show("m is: " + m.ToString());
+
             double NTCP = 0.0;
             ///  double n = 0.97;  // Volume effect paramter of the Lyman-Kutcher-Burman model. hard coded to 0.97 for Liver for now
             //  double m = 0.12;  // The Slope parameter of the Lyman-Kutcher-Burman model. hard coded to 0.12 for Liver for Now
@@ -142,31 +150,31 @@ namespace NTCPcalc
             double m = 0.12;
             double ab = 3.0;
 
-              MessageBox.Show("Trig EXE");
+             // MessageBox.Show("Trig EXE");
             IEnumerator ER = Plans.GetEnumerator();
-             MessageBox.Show("Trig EXE - f1");
+            // MessageBox.Show("Trig EXE - f1");
             ER.MoveNext();
-              MessageBox.Show("Trig EXE - f2");
+            //  MessageBox.Show("Trig EXE - f2");
             PlanSetup Plan = (PlanSetup)ER.Current;
-              MessageBox.Show("Trig EXE - f3");
+            //  MessageBox.Show("Trig EXE - f3");
             DVHData sDVH = Plan.GetDVHCumulativeData(Plan.StructureSet.Structures.ElementAt(14), DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
 
-              MessageBox.Show("Trig EXE - f4");
+             // MessageBox.Show("Trig EXE - f4");
             double RX = 0.0;        //prescribed dose of the organ in cGy
             double Dmax = 0.0;     // max dose ot the organ
             double Vol = 0.0;      // volume of the organ
             int fracs = 0;          // number of fractions to the organ
 
-             MessageBox.Show("Trig EXE - f5");
+            // MessageBox.Show("Trig EXE - f5");
 
             if (c1 > 0)
             {
-                   MessageBox.Show("Trig EXE - 2-1");
+                  // MessageBox.Show("Trig EXE - 2-1");
                 IEnumerator TR = Plansums.GetEnumerator();
                 TR.MoveNext();
                 PlanSum Plansum = (PlanSum)TR.Current;
 
-                  MessageBox.Show("Trig EXE - 3");
+                 // MessageBox.Show("Trig EXE - 3");
                 if (c1 == 1)
                 {
                     Plansum = (PlanSum)TR.Current;
@@ -185,25 +193,25 @@ namespace NTCPcalc
 
                 RX = (Plansum.PlanSetups.ElementAt(1).TotalPrescribedDose.Dose + Plansum.PlanSetups.ElementAt(2).TotalPrescribedDose.Dose);
                 fracs = (int)Plansum.PlanSetups.ElementAt(1).UniqueFractionation.NumberOfFractions;
-                 MessageBox.Show("Trig EXE - 4");
+               //  MessageBox.Show("Trig EXE - 4");
                 foreach (Structure S in Plansum.StructureSet.Structures)
                 {
-                    if (S.Id == org)
+                    if (S.Id == "Liver")
                     {
-                          MessageBox.Show("Trig EXE - 5");
+                         // MessageBox.Show("Trig EXE - 5");
                         sDVH = Plansum.GetDVHCumulativeData(S, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
                         Vol = S.Volume;
                     }
                 }
-                  MessageBox.Show("Trig EXE - 6");
+                 // MessageBox.Show("Trig EXE - 6");
             }
             else if (k1 > 0)
             {
 
-                  MessageBox.Show("K is: " + k1.ToString());
+                 // MessageBox.Show("K is: " + k1.ToString());
                 if (k1 == 1)
                 {
-                      MessageBox.Show("Trig EXE - 7");
+                     // MessageBox.Show("Trig EXE - 7");
                     Plan = (PlanSetup)ER.Current;
                 }
                 else if (k1 == 2)
@@ -232,22 +240,22 @@ namespace NTCPcalc
                     ER.MoveNext();
                     Plan = (PlanSetup)ER.Current;
                 }
-                 MessageBox.Show("Trig EXE - 8");
+                // MessageBox.Show("Trig EXE - 8");
                 RX = Plan.TotalPrescribedDose.Dose;
                 fracs = (int)Plan.UniqueFractionation.NumberOfFractions;
 
                 foreach (Structure S in Plan.StructureSet.Structures)
                 {
-                    if (S.Id == org)
+                    if (S.Id == "Liver")
                     {
-                         MessageBox.Show("Trig EXE - 9");
+                        // MessageBox.Show("S.Id is: " + S.Id.ToString());
                         sDVH = Plan.GetDVHCumulativeData(S, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
                         Vol = S.Volume;
                     }
                 }
             }
 
-             MessageBox.Show("Trig 13");
+           //  MessageBox.Show("Trig 13");
 
             Dmax = sDVH.MaxDose.Dose;
 
@@ -273,9 +281,10 @@ namespace NTCPcalc
 
             RX = RX / 100.0;       // converting cGy to Gy
             Dmax = Dmax / 100.0;
+
             //  MessageBox.Show("MaxDose 1 is: " + Dmax.ToString());
             //  MessageBox.Show("RXDose 1 is: " + RX.ToString());
-              MessageBox.Show("Fracs is: " + fracs.ToString());
+            //  MessageBox.Show("Fracs is: " + fracs.ToString());
 
             double VE = Veff(sDVH, RX, Dmax, Vol);
 
@@ -387,5 +396,20 @@ namespace NTCPcalc
                 TD50 = 45.8;
             }
         }
+
+        void checkedListBox1_ItemCheck(object sender, EventArgs e)
+        {
+            if (checkedListBox1.GetItemChecked(0))
+            {
+                ty = "HCC";
+                TD50 = 39.8;
+            }
+            else if (checkedListBox1.GetItemChecked(1))
+            {
+                ty = "METS";
+                TD50 = 45.8;
+            }
+        }
+
     }
 }
