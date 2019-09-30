@@ -32,6 +32,7 @@ namespace VMS.TPS
 
        public Script() { }  // instantiates a Script class
 
+
         // Global Variable Declaration
 
        public String pl = null;
@@ -39,11 +40,12 @@ namespace VMS.TPS
         // Declaration space for all the functions which make up the program.
         // Execution begins with the "Execute" function.
 
-
-
+       // Thread Prog = new Thread(Script());
 
         public void Execute(ScriptContext context)     // PROGRAM START - sending a return to Execute will end the program
         {
+
+          //  MessageBox.Show("Trig 1");
             //Variable declaration space
 
             int sumcnt = 0;
@@ -63,10 +65,11 @@ namespace VMS.TPS
 
             // start of actual code
 
-          //  MessageBox.Show("Trig 1");
+
+            //  MessageBox.Show("Trig 1");
             if (context.Patient == null)
             {
-                MessageBox.Show("Please load a patient with a treatment plan before running this script!");
+               // MessageBox.Show("Please load a patient with a treatment plan before running this script!");
                 return;
             }
 
@@ -74,14 +77,14 @@ namespace VMS.TPS
 
             foreach (PlanSum aplansum in Plansums)
             {
-                if (aplansum.Id == "motion assess")
+                if (aplansum.Id == "motion assess" || aplansum.Id == "Mot Assess" || aplansum.Id == "Motion Assess" || aplansum.Id == "mot assess")
                 { 
                    // MessageBox.Show("Trig Sum cHECK");
                     sumcnt++;
                     continue;
                 }
                 sumcnt++;
-               // MessageBox.Show("Trig 2");
+                  // MessageBox.Show("Trig 2");
                 if (sumcnt == 1)
                 {
                     foreach (Structure S in aplansum.StructureSet.Structures)
@@ -152,7 +155,7 @@ namespace VMS.TPS
 
             foreach (PlanSetup aplan in Plans)
             {
-                if(aplan.Id == "motion assess")
+                if(aplan.Id == "motion assess" || aplan.Id == "Mot Assess" || aplan.Id == "Motion Assess" || aplan.Id == "mot assess")
                 {
                    // MessageBox.Show("Trig Plan cHECK");
                     plancnt++;
@@ -160,7 +163,7 @@ namespace VMS.TPS
                 }
 
                 plancnt++;
-              //  MessageBox.Show("Trig 3");
+               // MessageBox.Show("Trig 3");
                 if (plancnt == 1)
                 {
                     foreach (Structure S in aplan.StructureSet.Structures)
@@ -273,21 +276,39 @@ namespace VMS.TPS
                 }
 
                // MessageBox.Show("Trig 3.5");
-            }                                                       
+            }
 
             //GUI starts here
 
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+           //  MessageBox.Show("Trig 4");
 
-           // MessageBox.Show("Trig 4");
+            System.Windows.Forms.Application.EnableVisualStyles();
+           // System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);      //This method breaks the script when it runs multiple times, because it will throw an exception if a window has already been created.
+            Start(Plansums, Plans, p1, p2, p3, p4, p5, p6, p7, p8);                            //The Windows .NET documentation specifically says this method should NOT be called in a Windows Forms program hosted in another application, like this, so it is ommitted
+                                                                                            //It is a legacy method anyway from eary versions of .NET, there should be no need to call it.
 
             //Starts GUI for Dose objective check in a separate thread
-            System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans,p1,p2,p3,p4,p5,p6,p7,p8));
+            //  Thread GUI = new Thread(new ThreadStart(Go));
 
             // MessageBox.Show("Trig End");
 
 
         }
+
+        public static void Start(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans, List<string> p1, List<string> p2, List<string> p3, List<string> p4, List<string> p5, List<string> p6, List<string> p7, List<string> p8)
+        {
+            System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans, p1, p2, p3, p4, p5, p6, p7, p8));
+        }
+
+        //  static void Go (IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans, List<string> p1, List<string> p2, List<string> p3, List<string> p4, List<string> p5, List<string> p6, List<string> p7, List<string> p8)
+        //  {
+        //      System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans, p1, p2, p3, p4, p5, p6, p7, p8));
+        //   }
+
+
+
+
+
+
     }
 }

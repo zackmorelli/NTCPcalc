@@ -1,0 +1,10 @@
+﻿Liver, 1.0, 0.12, 45.8, 39.8, 3
+
+
+
+
+END
+
+
+
+Organ, n, m, TD50 (in Gy), alpha/beta

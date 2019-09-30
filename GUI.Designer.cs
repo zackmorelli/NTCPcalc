@@ -48,6 +48,7 @@ namespace NTCPcalc
             this.NTCPout = new System.Windows.Forms.TextBox();
             this.nbox = new System.Windows.Forms.TextBox();
             this.mbox = new System.Windows.Forms.TextBox();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.SuspendLayout();
             // 
             // Directions
@@ -57,18 +58,18 @@ namespace NTCPcalc
             this.Directions.Multiline = true;
             this.Directions.Name = "Directions";
             this.Directions.ReadOnly = true;
-            this.Directions.Size = new System.Drawing.Size(815, 125);
+            this.Directions.Size = new System.Drawing.Size(815, 115);
             this.Directions.TabIndex = 0;
             this.Directions.Text = resources.GetString("Directions.Text");
             // 
             // Directions2
             // 
             this.Directions2.Font = new System.Drawing.Font("Goudy Old Style", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Directions2.Location = new System.Drawing.Point(12, 156);
+            this.Directions2.Location = new System.Drawing.Point(12, 142);
             this.Directions2.Multiline = true;
             this.Directions2.Name = "Directions2";
             this.Directions2.ReadOnly = true;
-            this.Directions2.Size = new System.Drawing.Size(815, 121);
+            this.Directions2.Size = new System.Drawing.Size(815, 133);
             this.Directions2.TabIndex = 1;
             this.Directions2.Text = resources.GetString("Directions2.Text");
             // 
@@ -78,7 +79,7 @@ namespace NTCPcalc
             this.PlanList.ForeColor = System.Drawing.Color.Black;
             this.PlanList.FormattingEnabled = true;
             this.PlanList.ItemHeight = 21;
-            this.PlanList.Location = new System.Drawing.Point(12, 295);
+            this.PlanList.Location = new System.Drawing.Point(12, 294);
             this.PlanList.Name = "PlanList";
             this.PlanList.Size = new System.Drawing.Size(322, 88);
             this.PlanList.TabIndex = 2;
@@ -90,7 +91,7 @@ namespace NTCPcalc
             this.OrganList.ForeColor = System.Drawing.Color.Black;
             this.OrganList.FormattingEnabled = true;
             this.OrganList.ItemHeight = 21;
-            this.OrganList.Location = new System.Drawing.Point(12, 400);
+            this.OrganList.Location = new System.Drawing.Point(12, 401);
             this.OrganList.Name = "OrganList";
             this.OrganList.Size = new System.Drawing.Size(472, 193);
             this.OrganList.TabIndex = 3;
@@ -99,7 +100,7 @@ namespace NTCPcalc
             // ExecuteCalc
             // 
             this.ExecuteCalc.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExecuteCalc.Location = new System.Drawing.Point(683, 295);
+            this.ExecuteCalc.Location = new System.Drawing.Point(654, 294);
             this.ExecuteCalc.Name = "ExecuteCalc";
             this.ExecuteCalc.Size = new System.Drawing.Size(133, 70);
             this.ExecuteCalc.TabIndex = 4;
@@ -132,7 +133,7 @@ namespace NTCPcalc
             // nbox
             // 
             this.nbox.Font = new System.Drawing.Font("Goudy Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nbox.Location = new System.Drawing.Point(351, 295);
+            this.nbox.Location = new System.Drawing.Point(340, 294);
             this.nbox.Name = "nbox";
             this.nbox.Size = new System.Drawing.Size(280, 27);
             this.nbox.TabIndex = 7;
@@ -141,17 +142,31 @@ namespace NTCPcalc
             // mbox
             // 
             this.mbox.Font = new System.Drawing.Font("Goudy Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mbox.Location = new System.Drawing.Point(351, 335);
+            this.mbox.Location = new System.Drawing.Point(340, 327);
             this.mbox.Name = "mbox";
             this.mbox.Size = new System.Drawing.Size(246, 27);
             this.mbox.TabIndex = 8;
             this.mbox.Text = "Slope Parameter m: ";
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.Font = new System.Drawing.Font("Goudy Old Style", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Items.AddRange(new object[] {
+            "HCC",
+            "METS"});
+            this.checkedListBox1.Location = new System.Drawing.Point(506, 401);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(80, 48);
+            this.checkedListBox1.TabIndex = 9;
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(853, 667);
+            this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.mbox);
             this.Controls.Add(this.nbox);
             this.Controls.Add(this.NTCPout);
@@ -179,5 +194,6 @@ namespace NTCPcalc
         private System.Windows.Forms.TextBox NTCPout;
         private TextBox nbox;
         private TextBox mbox;
+        private CheckedListBox checkedListBox1;
     }
 }
