@@ -33,15 +33,6 @@ namespace NTCPcalc
         List<string> plannames = new List<string>();
         List<string> sumnames = new List<string>();
 
-        List<string> L1 = new List<string>();
-        List<string> L2 = new List<string>();
-        List<string> L3 = new List<string>();
-        List<string> L4 = new List<string>();
-        List<string> L5 = new List<string>();
-        List<string> L6 = new List<string>();
-        List<string> L7 = new List<string>();
-        List<string> L8 = new List<string>();
-
         public GUI(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
             // MessageBox.Show("Trig 5");
@@ -64,7 +55,7 @@ namespace NTCPcalc
                 // MessageBox.Show("Trig 8");
             }
 
-            ExecuteCalc.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, Plansums, Plans, TD50); };
+            ExecuteCalc.Click += (sender, EventArgs) => { buttonNext_Click(sender, EventArgs, Plansums, Plans); };
 
    
 
@@ -93,14 +84,14 @@ namespace NTCPcalc
                 }
             }
 
-            // MessageBox.Show("Totvol is: " + TotVol);
+           //  MessageBox.Show("Totvol is: " + TotVol);
 
             double Area = (TotVol * 0.1);  // Volume Sum multiplied by the Dose step size gives the area under the DVH curve for the organ in question
 
             double AbsVeff = (Area / (RX * 100.0));  // this gives the Veff in cc
 
             // MessageBox.Show("ABSVeff is: " + AbsVeff);
-            // MessageBox.Show("Vol is: " + Vol);
+           //  MessageBox.Show("Vol is: " + Vol);
 
             VE = (AbsVeff / Vol);  // divide the Veff by the total volume of the organ to express Veff as a percentage
 
@@ -109,7 +100,7 @@ namespace NTCPcalc
             return VE;
         }
 
-        private double NTCPCALC(double VE, double TD50, double ab, double RX, double Dmax, double Vol, int fracs, double n, double m)
+        private double NTCPCALC(double VE, double ab, double Dmax, int fracs, double n, double m)
         {
              // MessageBox.Show("Dmax is: " + Dmax.ToString());
             //  double Fracs = (double)fracs;
@@ -120,7 +111,12 @@ namespace NTCPcalc
           //  MessageBox.Show("Rx is: " + RX.ToString());
           //  MessageBox.Show("Vol is: " + Vol.ToString());
            // MessageBox.Show("n is: " + n.ToString());
-          //  MessageBox.Show("m is: " + m.ToString());
+           // MessageBox.Show("m is: " + m.ToString());
+
+            if(TD50 == 0)
+            {
+                MessageBox.Show("Please select either METS or HCC for the calculation to work properly");
+            }
 
             double NTCP = 0.0;
             ///  double n = 0.97;  // Volume effect paramter of the Lyman-Kutcher-Burman model. hard coded to 0.97 for Liver for now
@@ -140,41 +136,44 @@ namespace NTCPcalc
 
             NTCP = (erf + 1) * 0.5;
 
-            // MessageBox.Show("NTCP is: " + NTCP);
+             MessageBox.Show("NTCP is: " + NTCP);
             return NTCP;
         }
 
-        private void EXECUTE(string org, double TD50, IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
+        private void EXECUTE(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
-            double n = 1.0;  // 
+            double n = 1.0;
             double m = 0.12;
             double ab = 3.0;
 
-             // MessageBox.Show("Trig EXE");
+        //    MessageBox.Show("Trig EXE");
             IEnumerator ER = Plans.GetEnumerator();
-            // MessageBox.Show("Trig EXE - f1");
+         //   MessageBox.Show("Trig EXE - f1");
             ER.MoveNext();
-            //  MessageBox.Show("Trig EXE - f2");
+          //  MessageBox.Show("Trig EXE - f2");
             PlanSetup Plan = (PlanSetup)ER.Current;
-            //  MessageBox.Show("Trig EXE - f3");
-            DVHData sDVH = Plan.GetDVHCumulativeData(Plan.StructureSet.Structures.ElementAt(14), DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
+          //  MessageBox.Show("Trig EXE - f3");
 
-             // MessageBox.Show("Trig EXE - f4");
+
+            DVHData sDVH = Plan.GetDVHCumulativeData(Plan.StructureSet.Structures.ElementAt(16), DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
+
+            MessageBox.Show("DVH fetched successfully!");
+
             double RX = 0.0;        //prescribed dose of the organ in cGy
             double Dmax = 0.0;     // max dose ot the organ
             double Vol = 0.0;      // volume of the organ
             int fracs = 0;          // number of fractions to the organ
 
-            // MessageBox.Show("Trig EXE - f5");
+         //    MessageBox.Show("Trig EXE - f5");
 
             if (c1 > 0)
             {
-                  // MessageBox.Show("Trig EXE - 2-1");
+                 //  MessageBox.Show("Trig EXE - 2-1");
                 IEnumerator TR = Plansums.GetEnumerator();
                 TR.MoveNext();
                 PlanSum Plansum = (PlanSum)TR.Current;
 
-                 // MessageBox.Show("Trig EXE - 3");
+                //  MessageBox.Show("Trig EXE - 3");
                 if (c1 == 1)
                 {
                     Plansum = (PlanSum)TR.Current;
@@ -193,12 +192,12 @@ namespace NTCPcalc
 
                 RX = (Plansum.PlanSetups.ElementAt(1).TotalPrescribedDose.Dose + Plansum.PlanSetups.ElementAt(2).TotalPrescribedDose.Dose);
                 fracs = (int)Plansum.PlanSetups.ElementAt(1).UniqueFractionation.NumberOfFractions;
-               //  MessageBox.Show("Trig EXE - 4");
+              //   MessageBox.Show("Trig EXE - 4");
                 foreach (Structure S in Plansum.StructureSet.Structures)
                 {
                     if (S.Id == "Liver")
                     {
-                         // MessageBox.Show("Trig EXE - 5");
+                        //  MessageBox.Show("Trig EXE - 5");
                         sDVH = Plansum.GetDVHCumulativeData(S, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
                         Vol = S.Volume;
                     }
@@ -208,10 +207,10 @@ namespace NTCPcalc
             else if (k1 > 0)
             {
 
-                 // MessageBox.Show("K is: " + k1.ToString());
+                //  MessageBox.Show("K is: " + k1.ToString());
                 if (k1 == 1)
                 {
-                     // MessageBox.Show("Trig EXE - 7");
+                    //  MessageBox.Show("Trig EXE - 7");
                     Plan = (PlanSetup)ER.Current;
                 }
                 else if (k1 == 2)
@@ -240,7 +239,7 @@ namespace NTCPcalc
                     ER.MoveNext();
                     Plan = (PlanSetup)ER.Current;
                 }
-                // MessageBox.Show("Trig EXE - 8");
+               //  MessageBox.Show("Trig EXE - 8");
                 RX = Plan.TotalPrescribedDose.Dose;
                 fracs = (int)Plan.UniqueFractionation.NumberOfFractions;
 
@@ -248,7 +247,7 @@ namespace NTCPcalc
                 {
                     if (S.Id == "Liver")
                     {
-                        // MessageBox.Show("S.Id is: " + S.Id.ToString());
+                      //   MessageBox.Show("S.Id is: " + S.Id.ToString());
                         sDVH = Plan.GetDVHCumulativeData(S, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
                         Vol = S.Volume;
                     }
@@ -277,20 +276,20 @@ namespace NTCPcalc
                   }
              }
              */
-            //  MessageBox.Show("MaxDose 2 is: " + Dmax.ToString());
+           //   MessageBox.Show("MaxDose 2 is: " + Dmax.ToString());
 
-            RX = RX / 100.0;       // converting cGy to Gy
-            Dmax = Dmax / 100.0;
+            RX = (RX / 100.0);       // converting cGy to Gy
+            Dmax = (Dmax / 100.0);
 
             //  MessageBox.Show("MaxDose 1 is: " + Dmax.ToString());
             //  MessageBox.Show("RXDose 1 is: " + RX.ToString());
-            //  MessageBox.Show("Fracs is: " + fracs.ToString());
+           //   MessageBox.Show("Fracs is: " + fracs.ToString());
 
             double VE = Veff(sDVH, RX, Dmax, Vol);
 
             VeffOut.Text = "Effective Volume: " + Math.Round((VE * 100.0), 3, MidpointRounding.AwayFromZero) + "%";
 
-            double NTCP = NTCPCALC(VE, TD50, ab, RX, Dmax, Vol, fracs, n, m);
+            double NTCP = NTCPCALC(VE, ab, Dmax, fracs, n, m);
 
             NTCPout.Text = "Normal Tissue Complication Probability: " + Math.Round((NTCP * 100.0), 3, MidpointRounding.AwayFromZero) + "%";
         }
@@ -302,10 +301,10 @@ namespace NTCPcalc
             //  MessageBox.Show("Trig 12 - First Click");
         }
 
-        void buttonNext_Click(object sender, EventArgs e, IEnumerable<PlanSum> PLS, IEnumerable<PlanSetup> PLN, double TD50)
+        void buttonNext_Click(object sender, EventArgs e, IEnumerable<PlanSum> PLS, IEnumerable<PlanSetup> PLN)
         {
             // MessageBox.Show("Trig MORTY");
-            EXECUTE(org, TD50, PLS, PLN);
+            EXECUTE(PLS, PLN);
         }
 
         void PlanList_SelectedIndexChanged(object sender, EventArgs e)
