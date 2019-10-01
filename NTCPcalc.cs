@@ -74,7 +74,7 @@ namespace VMS.TPS
 
             foreach (PlanSum aplansum in Plansums)
             {
-                if (aplansum.Id == "motion assess")
+                if (aplansum.Id == "motion assess" || aplansum.Id == "Motion Assess" || aplansum.Id == "Mot Assess" || aplansum.Id == "mot assess")
                 { 
                    // MessageBox.Show("Trig Sum cHECK");
                     sumcnt++;
@@ -152,7 +152,7 @@ namespace VMS.TPS
 
             foreach (PlanSetup aplan in Plans)
             {
-                if(aplan.Id == "motion assess")
+                if(aplan.Id == "motion assess" || aplan.Id == "Motion Assess" || aplan.Id == "Mot Assess" || aplan.Id == "mot assess")
                 {
                    // MessageBox.Show("Trig Plan cHECK");
                     plancnt++;
