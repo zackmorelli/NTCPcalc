@@ -278,7 +278,6 @@ namespace VMS.TPS
             //GUI starts here
 
             System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
 
            // MessageBox.Show("Trig 4");
 
