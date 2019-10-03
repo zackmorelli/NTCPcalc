@@ -12,7 +12,7 @@ C:\prog\NTCP\NTCPcalc\obj\Debug\NTCPcalc.csproj.GenerateResource.cache
 C:\prog\NTCP\NTCPcalc\obj\Debug\NTCPcalc.csproj.CopyComplete
 C:\prog\NTCP\NTCPcalc\bin\Debug\MathNet.Numerics.dll
 C:\prog\NTCP\NTCPcalc\bin\Debug\MathNet.Numerics.xml
-C:\prog\NTCP\NTCPcalc\bin\Debug\NTCPcalc.esapi.dll
-C:\prog\NTCP\NTCPcalc\bin\Debug\NTCPcalc.esapi.pdb
-C:\prog\NTCP\NTCPcalc\obj\Debug\NTCPcalc.esapi.dll
-C:\prog\NTCP\NTCPcalc\obj\Debug\NTCPcalc.esapi.pdb
+C:\prog\NTCP\NTCPcalc\bin\Debug\LiverOnlyNTCPcalc.esapi.dll
+C:\prog\NTCP\NTCPcalc\bin\Debug\LiverOnlyNTCPcalc.esapi.pdb
+C:\prog\NTCP\NTCPcalc\obj\Debug\LiverOnlyNTCPcalc.esapi.dll
+C:\prog\NTCP\NTCPcalc\obj\Debug\LiverOnlyNTCPcalc.esapi.pdb

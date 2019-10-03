@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NTCPcalc</RootNamespace>
-    <AssemblyName>NTCPcalc.esapi</AssemblyName>
+    <AssemblyName>LiverOnlyNTCPcalc.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

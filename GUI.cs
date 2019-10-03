@@ -104,14 +104,14 @@ namespace NTCPcalc
         {
              // MessageBox.Show("Dmax is: " + Dmax.ToString());
             //  double Fracs = (double)fracs;
-             // MessageBox.Show("Fracs is: " + fracs.ToString());
-          //  MessageBox.Show("VE is: " + VE.ToString());
+           //   MessageBox.Show("Fracs is: " + fracs.ToString());
+          // MessageBox.Show("VE is: " + VE.ToString());
           //  MessageBox.Show("TD50 is: " + TD50.ToString());
-          //  MessageBox.Show("ab is: " + ab.ToString());
+           // MessageBox.Show("ab is: " + ab.ToString());
           //  MessageBox.Show("Rx is: " + RX.ToString());
           //  MessageBox.Show("Vol is: " + Vol.ToString());
-           // MessageBox.Show("n is: " + n.ToString());
-           // MessageBox.Show("m is: " + m.ToString());
+         //  MessageBox.Show("n is: " + n.ToString());
+         //   MessageBox.Show("m is: " + m.ToString());
 
             if(TD50 == 0)
             {
@@ -146,16 +146,32 @@ namespace NTCPcalc
             double m = 0.12;
             double ab = 3.0;
 
-        //    MessageBox.Show("Trig EXE");
+          //  MessageBox.Show("Trig EXE");
             IEnumerator ER = Plans.GetEnumerator();
-         //   MessageBox.Show("Trig EXE - f1");
+          //  MessageBox.Show("Trig EXE - f1");
             ER.MoveNext();
           //  MessageBox.Show("Trig EXE - f2");
             PlanSetup Plan = (PlanSetup)ER.Current;
           //  MessageBox.Show("Trig EXE - f3");
 
+            IEnumerator ZK = Plan.StructureSet.Structures.GetEnumerator();      // all of this bullcrap from line 157 to 168 is just so we can get an initialized structure variable that we can use to instaiatiate a DVHdata variable, all because we don't have write access to Varian's API
+          //  MessageBox.Show("Trig EXE - f3.1");
+            ZK.MoveNext();
+          //  MessageBox.Show("Trig EXE - f3.2");
+            Structure STR = (Structure)ZK.Current;
+           // MessageBox.Show("Trig EXE - f3.3");
+            foreach (Structure S in Plan.StructureSet.Structures)
+            {
+                if (S.Id == "Liver")
+                {
+                    //   MessageBox.Show("S.Id is: " + S.Id.ToString());
+                    STR = S;
+                  //  MessageBox.Show("Trig EXE - f3.4");
+                }
+            }
 
-            DVHData sDVH = Plan.GetDVHCumulativeData(Plan.StructureSet.Structures.ElementAt(16), DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
+
+            DVHData sDVH = Plan.GetDVHCumulativeData(STR, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
 
             MessageBox.Show("DVH fetched successfully!");
 
@@ -164,11 +180,11 @@ namespace NTCPcalc
             double Vol = 0.0;      // volume of the organ
             int fracs = 0;          // number of fractions to the organ
 
-         //    MessageBox.Show("Trig EXE - f5");
+           //  MessageBox.Show("Trig EXE - f5");
 
             if (c1 > 0)
             {
-                 //  MessageBox.Show("Trig EXE - 2-1");
+                //   MessageBox.Show("Trig EXE - 2-1");
                 IEnumerator TR = Plansums.GetEnumerator();
                 TR.MoveNext();
                 PlanSum Plansum = (PlanSum)TR.Current;
@@ -287,11 +303,11 @@ namespace NTCPcalc
 
             double VE = Veff(sDVH, RX, Dmax, Vol);
 
-            VeffOut.Text = "Effective Volume: " + Math.Round((VE * 100.0), 3, MidpointRounding.AwayFromZero) + "%";
+            VeffOut.Text = "Effective Volume: " + Math.Round((VE * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
 
             double NTCP = NTCPCALC(VE, ab, Dmax, fracs, n, m);
 
-            NTCPout.Text = "Normal Tissue Complication Probability: " + Math.Round((NTCP * 100.0), 3, MidpointRounding.AwayFromZero) + "%";
+            NTCPout.Text = "Normal Tissue Complication Probability: " + Math.Round((NTCP * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
         }
 
         private void ExecuteCalc_Click(object sender, EventArgs args)
