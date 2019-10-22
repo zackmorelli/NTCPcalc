@@ -56,7 +56,7 @@ namespace VMS.TPS
             //  MessageBox.Show("Trig 1");
             if (context.Patient == null)
             {
-               // MessageBox.Show("Please load a patient with a treatment plan before running this script!");
+                MessageBox.Show("Please load a patient with a treatment plan before running this script!");
                 return;
             }
             
