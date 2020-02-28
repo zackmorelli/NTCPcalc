@@ -103,10 +103,7 @@ namespace NTCPcalc
             }
 
             double NTCP = 0.0;
-            //  double n = 0.97;  // Volume effect paramter of the Lyman-Kutcher-Burman model. hard coded to 0.97 for Liver for now
-            //  double m = 0.12;  // The Slope parameter of the Lyman-Kutcher-Burman model. hard coded to 0.12 for Liver for Now
-            // double TD50 = 45.8; // The 50% whole organ irradiation tolerance dose, in Gy. hard coded to 45.8 Gy for Liver for now.
-            // double ab = 3.0; // alpha/beta ratio. hard coded as 3 for liver for now
+
 
             double NTD2 = Dmax * (((Dmax / fracs) + ab) / (2 + ab));
 
@@ -120,13 +117,13 @@ namespace NTCPcalc
 
             NTCP = (erf + 1) * 0.5;
 
-             MessageBox.Show("NTCP is: " + NTCP);
+             // MessageBox.Show("NTCP is: " + NTCP);    used to show the whole value and verify calculation
             return NTCP;
         }
 
         private void EXECUTE(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
-            
+            bool livlock = false;
             double n = 1.0;         // Volume effect parameter of the Lyman-Kutcher-Burman model. Set here to one in accordance with the Lahey SBRT Liver Protocol
             double m = 0.12;        // Slope parameter of the Lyman-Kutcher-Burman model. set here to 0.12 in accordance with the Lahey SBRT Liver Protocol
             double ab = 3.0;        // alpha/beta radation sensitivity ratio of Livers. Originally comes from Linear-Quadratic model, used in LKB as well.
@@ -179,6 +176,64 @@ namespace NTCPcalc
                             {
                                 Plan = (PlanSetup)ER.Current;
                             }
+                            else
+                            {
+                                ER.MoveNext();
+                                Plan = (PlanSetup)ER.Current;
+                                if (Plan.Id == pl)
+                                {
+                                    Plan = (PlanSetup)ER.Current;
+                                }
+                                else
+                                {
+                                    ER.MoveNext();
+                                    Plan = (PlanSetup)ER.Current;
+                                    if (Plan.Id == pl)
+                                    {
+                                        Plan = (PlanSetup)ER.Current;
+                                    }
+                                    else
+                                    {
+                                        ER.MoveNext();
+                                        Plan = (PlanSetup)ER.Current;
+                                        if (Plan.Id == pl)
+                                        {
+                                            Plan = (PlanSetup)ER.Current;
+                                        }
+                                        else
+                                        {
+                                            ER.MoveNext();
+                                            Plan = (PlanSetup)ER.Current;
+                                            if (Plan.Id == pl)
+                                            {
+                                                Plan = (PlanSetup)ER.Current;
+                                            }
+                                            else
+                                            {
+                                                ER.MoveNext();
+                                                Plan = (PlanSetup)ER.Current;
+                                                if (Plan.Id == pl)
+                                                {
+                                                    Plan = (PlanSetup)ER.Current;
+                                                }
+                                                else
+                                                {
+                                                    ER.MoveNext();
+                                                    Plan = (PlanSetup)ER.Current;
+                                                    if (Plan.Id == pl)
+                                                    {
+                                                        Plan = (PlanSetup)ER.Current;
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox.Show("Could not find the selected plan!");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -206,19 +261,28 @@ namespace NTCPcalc
           Structure STR = (Structure)ZK.Current;
          // MessageBox.Show("Trig EXE - f3.3");
 
+         
+
           foreach (Structure S in Plan.StructureSet.Structures)
           {
               if (S.Id == "Liver")
               {
                   //  MessageBox.Show("S.Id is: " + S.Id.ToString());
                   STR = S;
+                  livlock = true;
                   // MessageBox.Show("Trig EXE - f3.4");
               }
           }
 
+          if(livlock == false)
+          {
+                MessageBox.Show("Warning: No liver structure was found in this plan! Unable to perform calculation.");
+                return;
+          }
+
           DVHData sDVH = Plan.GetDVHCumulativeData(STR, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
 
-          MessageBox.Show("DVH fetched successfully!");
+          // MessageBox.Show("DVH fetched successfully!");
 
           Vol = STR.Volume;
           Dmax = 0.0;
@@ -248,11 +312,11 @@ namespace NTCPcalc
 
           double VE = Veff(sDVH, RX, Vol);
 
-          VeffOut.Text = "Effective Volume: " + Math.Round((VE * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
+          VeffOut.Text = Math.Round((VE * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
 
           double NTCP = NTCPCALC(VE, ab, Dmax, fracs, n, m);
 
-          NTCPout.Text = "Normal Tissue Complication Probability: " + Math.Round((NTCP * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
+          NTCPout.Text = Math.Round((NTCP * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
         }
 
         private void ExecuteCalc_Click(object sender, EventArgs args)
@@ -272,25 +336,41 @@ namespace NTCPcalc
         {
             pl = PlanList.SelectedItem.ToString();
 
+            if (pl == "Motion Assess" || pl == "motion assess" || pl == "Mot Assess" || pl == "mot assess")
+            {
+                MessageBox.Show("This script is not compatible with Motion Assess plans!");
+                return;
+            }
             //  MessageBox.Show("Trig 10");
            
         }
         
-        void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             // MessageBox.Show("checkedlistboxfire");
-            if (checkedListBox1.GetItemChecked(0))
+            if (listBox1.SelectedItem.ToString() == "HCC")
             {
                 ty = "HCC";
                 TD50 = 39.8;
             }
-            else if (checkedListBox1.GetItemChecked(1))
+            else if (listBox1.SelectedItem.ToString() == "METS")
             {
                 ty = "METS";
                 TD50 = 45.8;
             }
         }
 
+        private void Directions_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NTCPout_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        /*
         void checkedListBox1_ItemCheck(object sender, EventArgs e)
         {
             if (checkedListBox1.GetItemChecked(0))
@@ -304,5 +384,6 @@ namespace NTCPcalc
                 TD50 = 45.8;
             }
         }
+        */
     }
 }

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Radiation Oncology Department, Lahey Health")]
 [assembly: AssemblyProduct("NTCPcalc")]
-[assembly: AssemblyCopyright("Copyright © 2019 Radiation Oncology Department, Lahey Health")]
+[assembly: AssemblyCopyright("Copyright © 2020 Radiation Oncology Department, Lahey Health")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

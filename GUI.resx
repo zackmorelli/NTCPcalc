@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Directions.Text" xml:space="preserve">
-    <value>This program will calculate the Effective Volume and corresponding Normal Tissue Complication Probability for Livers in a Radiation Therapy plan.  The program will look up the DVH , calculate the volume that is actually recieving a dose, the Effective Volume, and then apply the Lyman-Kutcher-Burman model to calculate a complication probability based on empirical Dose Tolerance data. This calculation makes many assumptions, and therefore is only an estimation.</value>
-  </data>
-  <data name="Directions2.Text" xml:space="preserve">
-    <value>The Program will detect all the plans currently loaded into your Scope in Eclipse. Choose the plan using the drop-down menus below. The Program will use the Lahey Liver Protocol parameters of n=1 and m=0.12. You must also check off either HCC or METS, which determines the TD50 used in the NTCP calculation. Click the button when you are ready to begin calculation.</value>
+    <value>This program will detect all the plans currently loaded into your Scope in Eclipse. Choose the plan you want to analyze using the drop-down menu. You must also check off either HCC or METS, which determines the TD50 value used in the NTCP calclation. The Lahey Liver Protocol parameters of n=1 and m=0.12 are used in the NTCP calculation. Keep in mind the NTCP is a probability calculated using the LKB model, which uses empirical data and has limitations. It is only an estimate.</value>
   </data>
 </root>
