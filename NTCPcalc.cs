@@ -17,8 +17,9 @@ using VMS.TPS.Common.Model.Types;
 
 
 /*
-    Normal Tissue Complication Probability (NPTC) Calculator
-    Copyright (c) 2019 Radiation Oncology Department, Lahey Health
+    Normal Tissue Complication Probability (NPTC) Calculator - ESAPI 15.6 version (3/16/2020)
+    Copyright (c) 2020 Radiation Oncology Department, Lahey Health
+    Written by: Zackary T Morelli
 
     This program is expressely written as a plug-in script for use with Varian's Eclipse Treatment Planning System, and requires Varian's API files to run properly.
     This program also requires .NET Framework 4.5.0 to run properly.

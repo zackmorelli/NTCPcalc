@@ -48,8 +48,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <ESAPIpathAPI>C:\prog\ESAPI\ESAPI V13.7 DLLs\VMS.TPS.Common.Model.API.dll</ESAPIpathAPI>
-    <ESAPIpathTypes>C:\prog\ESAPI\ESAPI V13.7 DLLs\VMS.TPS.Common.Model.Types.dll</ESAPIpathTypes>
+    <ESAPIpathAPI>C:\prog\ESAPI\ESAPI V13.7 DLLs\VMS.TPS.Common.Model.API.dll<ESAPIpathAPI>
+    <ESAPIpathTypes>C:\prog\ESAPI\ESAPI V13.7 DLLs\VMS.TPS.Common.Model.Types.dll<ESAPIpathAPI>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -68,8 +68,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <ESAPIpathAPI>C:\prog\ESAPI\ESAPI V15.6 DLLs\VMS.TPS.Common.Model.API.dll</ESAPIpathAPI>
-    <ESAPIpathTypes>C:\prog\ESAPI\ESAPI V15.6 DLLs\VMS.TPS.Common.Model.Types.dll</ESAPIpathTypes>
+    <ESAPIpathAPI>C:\prog\ESAPI\ESAPI V15.6 DLLs\VMS.TPS.Common.Model.API.dll<ESAPIpathAPI>
+    <ESAPIpathTypes>C:\prog\ESAPI\ESAPI V15.6 DLLs\VMS.TPS.Common.Model.Types.dll<ESAPIpathAPI>
   </PropertyGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
     <Reference Include="System.Core" />

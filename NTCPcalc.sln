@@ -7,17 +7,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTCPcalc", "NTCPcalc.csproj
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		NTCPcalctest|Any CPU = NTCPcalctest|Any CPU
+		ESAPI 13.7|Any CPU = ESAPI 13.7|Any CPU
+		ESAPI 13.7|x64 = ESAPI 13.7|x64
+		ESAPI 15.6|Any CPU = ESAPI 15.6|Any CPU
+		ESAPI 15.6|x64 = ESAPI 15.6|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5890AC65-77A7-4CAC-8036-298A336732D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5890AC65-77A7-4CAC-8036-298A336732D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5890AC65-77A7-4CAC-8036-298A336732D7}.NTCPcalctest|Any CPU.ActiveCfg = Debug|Any CPU
-		{5890AC65-77A7-4CAC-8036-298A336732D7}.NTCPcalctest|Any CPU.Build.0 = Debug|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 13.7|Any CPU.ActiveCfg = ESAPI 13.7|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 13.7|Any CPU.Build.0 = ESAPI 13.7|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 13.7|x64.ActiveCfg = ESAPI 13.7|x64
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 13.7|x64.Build.0 = ESAPI 13.7|x64
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 15.6|Any CPU.ActiveCfg = ESAPI 15.6|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 15.6|Any CPU.Build.0 = ESAPI 15.6|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 15.6|x64.ActiveCfg = ESAPI 15.6|x64
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.ESAPI 15.6|x64.Build.0 = ESAPI 15.6|x64
 		{5890AC65-77A7-4CAC-8036-298A336732D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5890AC65-77A7-4CAC-8036-298A336732D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.Release|x64.ActiveCfg = Release|x64
+		{5890AC65-77A7-4CAC-8036-298A336732D7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

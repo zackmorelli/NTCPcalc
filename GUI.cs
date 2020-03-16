@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.IO;
@@ -241,11 +240,11 @@ namespace NTCPcalc
 
           //  MessageBox.Show("Trig EXE - 10");
 
-          RX = Plan.TotalPrescribedDose.Dose;
+          RX = Plan.TotalDose.Dose;
 
           try
           {
-               fracs = (int)Plan.UniqueFractionation.NumberOfFractions;
+               fracs = (int)Plan.NumberOfFractions;
           }
           catch
           {
