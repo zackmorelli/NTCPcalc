@@ -73,14 +73,231 @@ namespace VMS.TPS
                 MessageBox.Show("Please load a patient with a treatment plan before running this script!");
                 return;
             }
+<<<<<<< HEAD
             
+=======
+
+            //this snippet generates lists of the structures for every plan and plansum that might be loaded in. these lists are then used to populate the Organ list dropdown in the GUI.
+
+            foreach (PlanSum aplansum in Plansums)
+            {
+                if (aplansum.Id == "motion assess" || aplansum.Id == "Motion Assess" || aplansum.Id == "Mot Assess" || aplansum.Id == "mot assess")
+                { 
+                   // MessageBox.Show("Trig Sum cHECK");
+                    sumcnt++;
+                    continue;
+                }
+                sumcnt++;
+               // MessageBox.Show("Trig 2");
+                if (sumcnt == 1)
+                {
+                    foreach (Structure S in aplansum.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p1.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p1.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p1.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (sumcnt == 2)
+                {
+                    foreach (Structure S in aplansum.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p2.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p2.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p2.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (sumcnt == 3)
+                {
+                    foreach (Structure S in aplansum.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p3.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p3.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p3.Add(S.ToString());
+                        }
+                    }
+                }
+            }
+
+            foreach (PlanSetup aplan in Plans)
+            {
+                if(aplan.Id == "motion assess" || aplan.Id == "Motion Assess" || aplan.Id == "Mot Assess" || aplan.Id == "mot assess")
+                {
+                   // MessageBox.Show("Trig Plan cHECK");
+                    plancnt++;
+                    continue;
+                }
+
+                plancnt++;
+              //  MessageBox.Show("Trig 3");
+                if (plancnt == 1)
+                {
+                    foreach (Structure S in aplan.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p4.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p4.Add(S.Name);
+                        }
+                        else if(S.ToString() != null)
+                        {
+                            p4.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (plancnt == 2)
+                {
+                    foreach (Structure S in aplan.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p5.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p5.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p5.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (plancnt == 3)
+                {
+                    foreach (Structure S in aplan.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p6.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p6.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p6.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (plancnt == 4)
+                {
+                    foreach (Structure S in aplan.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p7.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p7.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p7.Add(S.ToString());
+                        }
+                    }
+                }
+                else if (plancnt == 5)
+                {
+                    foreach (Structure S in aplan.StructureSet.Structures)
+                    {
+                        if (S.Volume < 0.03)
+                        {
+                            continue;
+                        }
+                        else if (S.Id != null)
+                        {
+                            p8.Add(S.Id);
+                        }
+                        else if (S.Name != null)
+                        {
+                            p8.Add(S.Name);
+                        }
+                        else if (S.ToString() != null)
+                        {
+                            p8.Add(S.ToString());
+                        }
+                    }
+                }
+
+               // MessageBox.Show("Trig 3.5");
+            }                                                       
+
+>>>>>>> master
             //GUI starts here
             //MessageBox.Show("Trig 4");
 
             System.Windows.Forms.Application.EnableVisualStyles();
+<<<<<<< HEAD
            // System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);      //This method breaks the script when it runs multiple times, because it will throw an exception if a window has already been created.
             Start(Plansums, Plans );                                                           //The Windows .NET documentation specifically says this method should NOT be called in a Windows Forms program hosted in another application, like this, so it is ommitted
                                                                                             //It is a legacy method anyway from eary versions of .NET, there should be no need to call it.
+=======
+
+           // MessageBox.Show("Trig 4");
+
+            //Starts GUI for Dose objective check in a separate thread
+            System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans,p1,p2,p3,p4,p5,p6,p7,p8));
+>>>>>>> master
 
             // MessageBox.Show("Trig End");
         }
