@@ -17,14 +17,34 @@ using VMS.TPS.Common.Model.Types;
 
 
 /*
-    Normal Tissue Complication Probability (NPTC) Calculator - ESAPI 15.6 version (3/16/2020)
-    Copyright (c) 2020 Radiation Oncology Department, Lahey Health
-    Written by: Zackary T Morelli
-
+    Liver Only Normal Tissue Complication Probability (NTCP) Calculator - ESAPI 16.0 version (3/16/2020)
+    This is the start-up program for the NTCP calc plug-in script. It calls the Execute function to start the script and then starts a WinForms GUI where the rest fo the program takes place. 
     This program is expressely written as a plug-in script for use with Varian's Eclipse Treatment Planning System, and requires Varian's API files to run properly.
-    This program also requires .NET Framework 4.5.0 to run properly.
+    This program requires .NET Framework 4.6.1, and the MathNet.Numerics class library package, which is freely availible on the NuGet Package manager in Visual Studio.
+    The MathNet.Numerics package contains an Error function method which is used in the NTCP calculation.
+
+    Copyright (C) 2021 Zackary Thomas Ricci Morelli
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+    I can be contacted at: zackmorelli@gmail.com
 
 */
+
+//The NTCP Calc script starts here 
+
 
 namespace VMS.TPS
 {
@@ -38,58 +58,37 @@ namespace VMS.TPS
 
        public String pl = null;
 
-        // Declaration space for all the functions which make up the program.
-        // Execution begins with the "Execute" function.
-
-       // Thread Prog = new Thread(Script());
+      // Execution begins with the "Execute" function.
 
         public void Execute(ScriptContext context)     // PROGRAM START - sending a return to Execute will end the program
         {
 
           //  MessageBox.Show("Trig 1");
-            //Variable declaration space
 
             IEnumerable<PlanSum> Plansums = context.PlanSumsInScope;
             IEnumerable<PlanSetup> Plans = context.PlansInScope;
 
-            // start of actual code
-
-            //  MessageBox.Show("Trig 1");
             if (context.Patient == null)
             {
                 MessageBox.Show("Please load a patient with a treatment plan before running this script!");
                 return;
             }
             
-
             //GUI starts here
-
-           //  MessageBox.Show("Trig 4");
+            //MessageBox.Show("Trig 4");
 
             System.Windows.Forms.Application.EnableVisualStyles();
            // System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);      //This method breaks the script when it runs multiple times, because it will throw an exception if a window has already been created.
-            Start(Plansums, Plans );                            //The Windows .NET documentation specifically says this method should NOT be called in a Windows Forms program hosted in another application, like this, so it is ommitted
+            Start(Plansums, Plans );                                                           //The Windows .NET documentation specifically says this method should NOT be called in a Windows Forms program hosted in another application, like this, so it is ommitted
                                                                                             //It is a legacy method anyway from eary versions of .NET, there should be no need to call it.
 
-            //Starts GUI for Dose objective check in a separate thread
-            //  Thread GUI = new Thread(new ThreadStart(Go));
-
             // MessageBox.Show("Trig End");
-
-
         }
 
         public static void Start(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans )
         {
             System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans ));
         }
-
-        //  static void Go (IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans, List<string> p1, List<string> p2, List<string> p3, List<string> p4, List<string> p5, List<string> p6, List<string> p7, List<string> p8)
-        //  {
-        //      System.Windows.Forms.Application.Run(new NTCPcalc.GUI(Plansums, Plans, p1, p2, p3, p4, p5, p6, p7, p8));
-        //   }
-                     
-
 
     }
 }

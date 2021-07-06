@@ -1,5 +1,3 @@
-C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\LiverOnlyNTCPcalc.esapi.dll
-C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\LiverOnlyNTCPcalc.esapi.pdb
 C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\MathNet.Numerics.dll
 C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\VMS.TPS.Common.Model.API.dll
 C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\VMS.TPS.Common.Model.Types.dll
@@ -9,5 +7,7 @@ C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\NTCPcalc.GUI.resources
 C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\NTCPcalc.csproj.GenerateResource.cache
 C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\NTCPcalc.csproj.CoreCompileInputs.cache
 C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\NTCPcalc.csproj.CopyComplete
-C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\LiverOnlyNTCPcalc.esapi.dll
-C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\LiverOnlyNTCPcalc.esapi.pdb
+C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\LiverNTCPcalc_16.0.esapi.dll
+C:\prog\NTCP\NTCPcalc\bin\x64\ESAPI 15.6\LiverNTCPcalc_16.0.esapi.pdb
+C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\LiverNTCPcalc_16.0.esapi.dll
+C:\prog\NTCP\NTCPcalc\obj\x64\ESAPI 15.6\LiverNTCPcalc_16.0.esapi.pdb

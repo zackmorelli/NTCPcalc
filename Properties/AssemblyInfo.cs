@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NTCPcalc")]
-[assembly: AssemblyDescription("Written by Zackary Morelli")]
+[assembly: AssemblyDescription("A Normal Tissue Complication Probability Calculator for the Eclipse Treatment Planning System.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Radiation Oncology Department, Lahey Health")]
+[assembly: AssemblyCompany("Radiation Oncology Department, Lahey Hospital and Medical Center, Burlington MA, U.S.A.")]
 [assembly: AssemblyProduct("NTCPcalc")]
-[assembly: AssemblyCopyright("Copyright © 2020 Radiation Oncology Department, Lahey Health")]
+[assembly: AssemblyCopyright("Copyright © 2021 Zackary Thomas Ricci Morelli")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

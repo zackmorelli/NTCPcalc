@@ -8,9 +8,40 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VMS.TPS;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
+
+
+
+/*
+    Liver Only Normal Tissue Complication Probability (NTCP) Calculator - ESAPI 16.0 version (3/16/2020).
+
+    This is the WinForms GUI for the NTCP calc program, where most of the program takes place. It is called by the NTCPcalc start-up program.
+
+    This program is expressely written as a plug-in script for use with Varian's Eclipse Treatment Planning System, and requires Varian's API files to run properly.
+    This program also requires .NET Framework 4.6.1 to run properly, and the MathNet.Numerics class library package, which is freely availible on the NuGet Package manager in Visual Studio.
+    The MathNet.Numerics package contains an Error function method which is used in the NTCP calculation.
+
+    Copyright (C) 2021 Zackary Thomas Ricci Morelli
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+        I can be contacted at: zackmorelli@gmail.com
+       
+*/
+
+
 
 namespace NTCPcalc
 {
@@ -57,6 +88,7 @@ namespace NTCPcalc
 
             //  MessageBox.Show("sDVH.CurveData[50].DoseValue is: " + sDVH.CurveData[50].DoseValue);
 
+            //This performs a volume sum of the Liver DVH curve. It is cut off once it gets to a very small volume; for some reason Eclipse attempts to figure out dose values at very small volumes but it is really meaningless and negligible.
             foreach (DVHPoint point in sDVH.CurveData)
             {
                 TotVol += point.Volume;
@@ -69,7 +101,7 @@ namespace NTCPcalc
 
            //  MessageBox.Show("Totvol is: " + TotVol);
 
-            double Area = (TotVol * 0.1);  // Volume Sum multiplied by the Dose step size gives the area under the DVH curve for the organ in question
+            double Area = (TotVol * 0.1);  // Volume Sum multiplied by the Dose step size (always 0.1) gives the area under the DVH curve for the organ in question
 
             double AbsVeff = (Area / (RX * 100.0));  // this gives the Veff in cc
 
@@ -96,6 +128,7 @@ namespace NTCPcalc
          //  MessageBox.Show("n is: " + n.ToString());
          //   MessageBox.Show("m is: " + m.ToString());
 
+            //This is a protection to make sure the user selected the specific diagnosis for the patient they are making a liver plan for. Otherwise we don't know what the TD50 is.
             if(TD50 == 0)
             {
                 MessageBox.Show("Please select either METS or HCC for the calculation to work properly");
@@ -103,25 +136,28 @@ namespace NTCPcalc
 
             double NTCP = 0.0;
 
+            // The NTCP calculation is broken into parts here to make it easier.
 
             double NTD2 = Dmax * (((Dmax / fracs) + ab) / (2 + ab));
 
             double TDVeff = TD50 * (Math.Pow(VE, -n));
 
-            double t = ((NTD2 - TDVeff) / TDVeff) / m;  //  t is the parameter given to the ERF function
+            double t = ((NTD2 - TDVeff) / TDVeff) / m;  //  t is the parameter given to the Error function
 
             // NTCP = 1/2(ERF(t/sqrt(2)) + 1)
 
+            //This is the core of what this program does. The NTCP formula is expressed as an Error Function (one of the special named integral functions), so the Math.Net Numerics package is used to numerically approximate it.
             double erf = MathNet.Numerics.SpecialFunctions.Erf((t / Math.Sqrt(2)));
 
             NTCP = (erf + 1) * 0.5;
 
-             // MessageBox.Show("NTCP is: " + NTCP);    used to show the whole value and verify calculation
+            // MessageBox.Show("NTCP is: " + NTCP);    used to show the whole value and verify calculation
             return NTCP;
         }
 
         private void EXECUTE(IEnumerable<PlanSum> Plansums, IEnumerable<PlanSetup> Plans)
         {
+            //All of the parameters of the LKB model and the other variables used are all declared here, that way they can all be changed in one place.
             bool livlock = false;
             double n = 1.0;         // Volume effect parameter of the Lyman-Kutcher-Burman model. Set here to one in accordance with the Lahey SBRT Liver Protocol
             double m = 0.12;        // Slope parameter of the Lyman-Kutcher-Burman model. set here to 0.12 in accordance with the Lahey SBRT Liver Protocol
@@ -133,6 +169,9 @@ namespace NTCPcalc
 
            // MessageBox.Show("Trig EXE - 1");
 
+
+            //This bit of code below is just to find the plan the user selected from the list
+            //it is the same anachronistic code from the Dose objective check program, obviously using LINQ would be better
             IEnumerator ER = Plans.GetEnumerator();
             ER.MoveNext();
             PlanSetup Plan = (PlanSetup)ER.Current;
@@ -238,6 +277,7 @@ namespace NTCPcalc
                 }
             }
 
+           //now that we have identified the plan, we get the prescribed dose and number of fractions
           //  MessageBox.Show("Trig EXE - 10");
 
           RX = Plan.TotalDose.Dose;
@@ -251,16 +291,15 @@ namespace NTCPcalc
                 MessageBox.Show("An error ocurred when attempting to retrieve the Number of Fractions of this plan. A default value of 5 will be used.");
                 fracs = 5;
           }
-                
-          IEnumerator ZK = Plan.StructureSet.Structures.GetEnumerator();      // all of this stuff from line 157 to 168 is just so we can get an initialized structure variable that we can use to instaiatiate a DVHdata variable, all because we don't have write access to Varian's API
-                                                                                    //  MessageBox.Show("Trig EXE - f3.1");
+          
+         //Then we identify the Liver structure, if it exists.
+         //In order to expand this program to calculate NTCP for various organs, you would to identify other organs and then look up the parameters required from a static list of a custom class used to store the NTCP parameters 
+
+          IEnumerator ZK = Plan.StructureSet.Structures.GetEnumerator();      // all of this stuff from line 286 to 291 is just so we can get an initialized structure variable that we can use to instantiate a DVHdata variable, all because we don't have write access to Varian's API                                                                 
           ZK.MoveNext();
           // MessageBox.Show("Trig EXE - 11");
 
           Structure STR = (Structure)ZK.Current;
-         // MessageBox.Show("Trig EXE - f3.3");
-
-         
 
           foreach (Structure S in Plan.StructureSet.Structures)
           {
@@ -279,6 +318,7 @@ namespace NTCPcalc
                 return;
           }
 
+          //Once we have the Liver structure we pull it's DVH info to get the max dose to the liver
           DVHData sDVH = Plan.GetDVHCumulativeData(STR, DoseValuePresentation.Absolute, VolumePresentation.AbsoluteCm3, 0.1);
 
           // MessageBox.Show("DVH fetched successfully!");
@@ -308,13 +348,17 @@ namespace NTCPcalc
 
           RX = (RX / 100.0);       // converting cGy to Gy
           Dmax = (Dmax / 100.0);
-
+            
+            //The Liver's DVH object, the prescribed dose of the plan, and the volume of the Liver are passed to a method which calculates the effective volume.
           double VE = Veff(sDVH, RX, Vol);
 
+            // The effective volume returned by the Veff method is displayed on the GUI
           VeffOut.Text = Math.Round((VE * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
 
+            //The effective volume, alpha/beta ratio, max dose, number of fractions, the volume parameter, and the slope parameter are passed to a mehtod which calculates the NTCP.
           double NTCP = NTCPCALC(VE, ab, Dmax, fracs, n, m);
 
+            //The NTCP value returned by the NTCPCALC method is displayed on the GUI.
           NTCPout.Text = Math.Round((NTCP * 100.0), 1, MidpointRounding.AwayFromZero) + "%";
         }
 
@@ -335,6 +379,7 @@ namespace NTCPcalc
         {
             pl = PlanList.SelectedItem.ToString();
 
+            // Liver plans usually have a motion assesment plan. This makes sure the program doesn't attempt to run if the user chooses it by accident, as it will cause an error.
             if (pl == "Motion Assess" || pl == "motion assess" || pl == "Mot Assess" || pl == "mot assess")
             {
                 MessageBox.Show("This script is not compatible with Motion Assess plans!");
@@ -359,30 +404,7 @@ namespace NTCPcalc
             }
         }
 
-        private void Directions_TextChanged(object sender, EventArgs e)
-        {
 
-        }
 
-        private void NTCPout_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        /*
-        void checkedListBox1_ItemCheck(object sender, EventArgs e)
-        {
-            if (checkedListBox1.GetItemChecked(0))
-            {
-                ty = "HCC";
-                TD50 = 39.8;
-            }
-            else if (checkedListBox1.GetItemChecked(1))
-            {
-                ty = "METS";
-                TD50 = 45.8;
-            }
-        }
-        */
     }
 }
